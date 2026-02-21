@@ -1,0 +1,145 @@
+@import "tailwindcss";
+
+@theme {
+    --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif;
+}
+
+:root {
+    --bg-deep: #0a0a0b;
+    --bg-card: rgba(255, 255, 255, 0.05);
+    --border-glass: rgba(255, 255, 255, 0.1);
+    --accent-teal: #20c997;
+    --accent-blue: #339af0;
+    --accent-red: #ff4d4d;
+    --text-primary: #f8f9fa;
+    --text-secondary: #adb5bd;
+    --glass-blur: blur(12px);
+    --shadow-neon: 0 0 20px rgba(32, 201, 151, 0.2);
+}
+
+@layer base {
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    body {
+        font-family: var(--font-sans);
+        background-color: var(--bg-deep);
+        color: var(--text-primary);
+        overflow: hidden;
+    }
+
+    /* Root is just a block container — layout is handled by .app-shell */
+    #root {
+        height: 100vh;
+        width: 100vw;
+    }
+}
+
+@layer components {
+
+    /* The main authenticated layout shell */
+    .app-shell {
+        display: flex;
+        height: 100vh;
+        width: 100vw;
+        background-color: var(--bg-deep);
+    }
+
+    .main-content {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        height: 100vh;
+        overflow: hidden;
+    }
+
+    .page-scroll {
+        flex: 1;
+        overflow-y: auto;
+    }
+
+    .glass {
+        background: var(--bg-card);
+        backdrop-filter: var(--glass-blur);
+        border: 1px solid var(--border-glass);
+        border-radius: 24px;
+    }
+
+    .glass-card {
+        background: rgba(255, 255, 255, 0.02);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.05);
+        border-radius: 20px;
+        padding: 24px;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .glass-card:hover {
+        border-color: rgba(255, 255, 255, 0.1);
+        background: rgba(255, 255, 255, 0.05);
+        transform: translateY(-4px);
+        box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
+    }
+
+    .text-gradient {
+        background: linear-gradient(135deg, #20c997 0%, #339af0 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+
+    .badge {
+        @apply px-2.5 py-1 rounded-lg text-[10px] font-bold uppercase tracking-wider border;
+    }
+
+    .badge-available {
+        @apply text-teal-400 bg-teal-500/10 border-teal-500/20;
+    }
+
+    .badge-ontrip {
+        @apply text-blue-400 bg-blue-500/10 border-blue-500/20;
+    }
+
+    .badge-inshop {
+        @apply text-red-400 bg-red-500/10 border-red-500/20;
+    }
+
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar {
+        width: 6px;
+    }
+
+    ::-webkit-scrollbar-track {
+        background: transparent;
+    }
+
+    ::-webkit-scrollbar-thumb {
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 10px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+        background: rgba(255, 255, 255, 0.2);
+    }
+}
+
+@layer utilities {
+    .animate-float {
+        animation: float 6s ease-in-out infinite;
+    }
+
+    @keyframes float {
+
+        0%,
+        100% {
+            transform: translateY(0);
+        }
+
+        50% {
+            transform: translateY(-10px);
+        }
+    }
+}

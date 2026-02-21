@@ -1,117 +1,77 @@
-import React, { useEffect } from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-import { AuthProvider } from './context/AuthContext';
-import ProtectedRoute from './components/ProtectedRoute';
+import React from 'react';
+import { BrowserRouter, Routes, Route, Navigate, useNavigate } from 'react-router-dom';
+import Sidebar from './components/Sidebar';
+import Header from './components/Header';
+import Dashboard from './pages/Dashboard';
+import Vehicles from './pages/Vehicles';
+import Drivers from './pages/Drivers';
+import Trips from './pages/Trips';
+import Maintenance from './pages/Maintenance';
+import Fuel from './pages/Fuel';
+import Login from './pages/Login';
 
-// Pages
-import LoginPage from './pages/LoginPage';
-import DashboardPage from './pages/DashboardPage';
-import DispatchPage from './pages/DispatchPage';
-import DriversPage from './pages/DriversPage';
-import ReportsPage from './pages/ReportsPage';
-import VehiclesPage from './pages/VehiclesPage';
-import TripsPage from './pages/TripsPage';
-import MaintenancePage from './pages/MaintenancePage';
-import FuelLogsPage from './pages/FuelLogsPage';
-import AnalyticsPage from './pages/AnalyticsPage';
+// Role → allowed page paths
+const ROLE_ACCESS = {
+  'Fleet Manager': ['/', '/vehicles', '/drivers', '/trips', '/maintenance', '/fuel'],
+  'Dispatcher': ['/', '/vehicles', '/drivers', '/trips'],
+  'Safety Officer': ['/', '/drivers'],
+  'Financial Analyst': ['/', '/maintenance', '/fuel'],
+};
 
-/**
- * Main App Component
- * Sets up routing and authentication
- */
-function App() {
-  useEffect(() => {
-    // Final integration check complete
-    console.log('🎉 PROFESSIONAL FLEETFLOW UI READY');
-  }, []);
+const getUser = () => {
+  try {
+    const user = JSON.parse(localStorage.getItem('user'));
+    // Ensure user exists and has a valid role
+    if (user && user.role && ROLE_ACCESS[user.role]) {
+      return user;
+    }
+    return null;
+  } catch {
+    return null;
+  }
+};
+
+const ProtectedRoute = ({ path, children }) => {
+  const user = getUser();
+  if (!user) return <Navigate to="/login" replace />;
+  const allowed = ROLE_ACCESS[user.role] || ['/'];
+  if (!allowed.includes(path)) return <Navigate to="/" replace />;
+  return children;
+};
+
+const ProtectedLayout = () => {
+  const user = getUser();
+  const navigate = useNavigate();
+  if (!user) return <Navigate to="/login" replace />;
 
   return (
-    <Router>
-      <AuthProvider>
-        <Routes>
-          {/* Public Routes */}
-          {/* <Route path="/login" element={<LoginPage />} /> */}
-
-          {/* Protected Routes */}
-          <Route
-            path="/dashboard"
-            element={
-              // <ProtectedRoute>
-                <DashboardPage />
-              // </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/dispatch"
-            element={
-              // <ProtectedRoute>
-                <DispatchPage />
-              // </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/drivers"
-            element={
-              // <ProtectedRoute>
-                <DriversPage />
-              // </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/reports"
-            element={
-              // <ProtectedRoute>
-                <ReportsPage />
-              // </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/vehicles"
-            element={
-              // <ProtectedRoute>
-                <VehiclesPage />
-              // </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/trips"
-            element={
-              // <ProtectedRoute>
-                <TripsPage />
-              // </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/maintenance"
-            element={
-              // <ProtectedRoute>
-                <MaintenancePage />
-              // </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/fuel-logs"
-            element={
-              // <ProtectedRoute>
-                <FuelLogsPage />
-              // </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/analytics"
-            element={
-              // <ProtectedRoute>
-                <AnalyticsPage />
-              // </ProtectedRoute>
-            }
-          />
-
-          {/* Redirect root to dashboard */}
-          <Route path="/" element={<Navigate to="/dashboard" replace />} />
-        </Routes>
-      </AuthProvider>
-    </Router>
+    <div className="app-shell">
+      <Sidebar />
+      <div className="main-content">
+        <Header />
+        <div className="page-scroll">
+          <Routes>
+            <Route path="/" element={<Dashboard />} />
+            <Route path="/vehicles" element={<ProtectedRoute path="/vehicles"><Vehicles /></ProtectedRoute>} />
+            <Route path="/drivers" element={<ProtectedRoute path="/drivers"><Drivers /></ProtectedRoute>} />
+            <Route path="/trips" element={<ProtectedRoute path="/trips"><Trips /></ProtectedRoute>} />
+            <Route path="/maintenance" element={<ProtectedRoute path="/maintenance"><Maintenance /></ProtectedRoute>} />
+            <Route path="/fuel" element={<ProtectedRoute path="/fuel"><Fuel /></ProtectedRoute>} />
+            <Route path="*" element={<Navigate to="/" replace />} />
+          </Routes>
+        </div>
+      </div>
+    </div>
   );
-}
+};
+
+const App = () => (
+  <BrowserRouter>
+    <Routes>
+      <Route path="/login" element={<Login />} />
+      <Route path="/*" element={<ProtectedLayout />} />
+    </Routes>
+  </BrowserRouter>
+);
 
 export default App;
