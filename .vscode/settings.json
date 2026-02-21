@@ -1,0 +1,10 @@
+{
+  // Disable Git decorations (removes faded/ignored appearance)
+  "git.decorations.enabled": false,
+
+  // Ensure no workspace excludes are hiding folders
+  "files.exclude": {
+    "**/.git": false,
+    "**/.DS_Store": false
+  }
+}
