@@ -5,16 +5,41 @@
 }
 
 :root {
-    --bg-deep: #0a0a0b;
-    --bg-card: rgba(255, 255, 255, 0.05);
-    --border-glass: rgba(255, 255, 255, 0.1);
+    /* Base Colors (Shared) */
     --accent-teal: #20c997;
     --accent-blue: #339af0;
     --accent-red: #ff4d4d;
+    --accent-yellow: #f59e0b;
+    --accent-purple: #8b5cf6;
+    --accent-cyan: #06b6d4;
+
+    /* Dark Theme (Default) */
+    --bg-deep: #0a0a0b;
+    --bg-sidebar: #0f1115;
+    --bg-header: rgba(10, 10, 11, 0.8);
+    --bg-card: rgba(255, 255, 255, 0.05);
+    --bg-card-hover: rgba(255, 255, 255, 0.08);
+    --border-glass: rgba(255, 255, 255, 0.1);
+    --border-subtle: rgba(255, 255, 255, 0.05);
     --text-primary: #f8f9fa;
     --text-secondary: #adb5bd;
+    --text-muted: #6c757d;
     --glass-blur: blur(12px);
-    --shadow-neon: 0 0 20px rgba(32, 201, 151, 0.2);
+    --shadow-main: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
+}
+
+[data-theme='light'] {
+    --bg-deep: #f8f9fa;
+    --bg-sidebar: #ffffff;
+    --bg-header: rgba(248, 249, 250, 0.8);
+    --bg-card: rgba(0, 0, 0, 0.03);
+    --bg-card-hover: rgba(0, 0, 0, 0.05);
+    --border-glass: rgba(0, 0, 0, 0.08);
+    --border-subtle: rgba(0, 0, 0, 0.05);
+    --text-primary: #1a1a1b;
+    --text-secondary: #495057;
+    --text-muted: #868e96;
+    --shadow-main: 0 10px 30px -10px rgba(0, 0, 0, 0.1);
 }
 
 @layer base {
@@ -29,9 +54,9 @@
         background-color: var(--bg-deep);
         color: var(--text-primary);
         overflow: hidden;
+        transition: background-color 0.3s ease, color 0.3s ease;
     }
 
-    /* Root is just a block container — layout is handled by .app-shell */
     #root {
         height: 100vh;
         width: 100vw;
@@ -39,13 +64,12 @@
 }
 
 @layer components {
-
-    /* The main authenticated layout shell */
     .app-shell {
         display: flex;
         height: 100vh;
         width: 100vw;
         background-color: var(--bg-deep);
+        transition: background-color 0.3s ease;
     }
 
     .main-content {
@@ -66,26 +90,27 @@
         backdrop-filter: var(--glass-blur);
         border: 1px solid var(--border-glass);
         border-radius: 24px;
+        transition: all 0.3s ease;
     }
 
     .glass-card {
-        background: rgba(255, 255, 255, 0.02);
+        background: var(--bg-card);
         backdrop-filter: blur(10px);
-        border: 1px solid rgba(255, 255, 255, 0.05);
+        border: 1px solid var(--border-glass);
         border-radius: 20px;
         padding: 24px;
         transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
     .glass-card:hover {
-        border-color: rgba(255, 255, 255, 0.1);
-        background: rgba(255, 255, 255, 0.05);
+        border-color: var(--accent-blue);
+        background: var(--bg-card-hover);
         transform: translateY(-4px);
-        box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
+        box-shadow: var(--shadow-main);
     }
 
     .text-gradient {
-        background: linear-gradient(135deg, #20c997 0%, #339af0 100%);
+        background: linear-gradient(135deg, var(--accent-teal) 0%, var(--accent-blue) 100%);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
         background-clip: text;
@@ -93,18 +118,25 @@
 
     .badge {
         @apply px-2.5 py-1 rounded-lg text-[10px] font-bold uppercase tracking-wider border;
+        transition: all 0.2s ease;
     }
 
     .badge-available {
-        @apply text-teal-400 bg-teal-500/10 border-teal-500/20;
+        color: var(--accent-teal);
+        background: color-mix(in srgb, var(--accent-teal) 10%, transparent);
+        border-color: color-mix(in srgb, var(--accent-teal) 20%, transparent);
     }
 
     .badge-ontrip {
-        @apply text-blue-400 bg-blue-500/10 border-blue-500/20;
+        color: var(--accent-blue);
+        background: color-mix(in srgb, var(--accent-blue) 10%, transparent);
+        border-color: color-mix(in srgb, var(--accent-blue) 20%, transparent);
     }
 
     .badge-inshop {
-        @apply text-red-400 bg-red-500/10 border-red-500/20;
+        color: var(--accent-red);
+        background: color-mix(in srgb, var(--accent-red) 10%, transparent);
+        border-color: color-mix(in srgb, var(--accent-red) 20%, transparent);
     }
 
     /* Custom Scrollbar */
@@ -117,12 +149,12 @@
     }
 
     ::-webkit-scrollbar-thumb {
-        background: rgba(255, 255, 255, 0.1);
+        background: var(--border-glass);
         border-radius: 10px;
     }
 
     ::-webkit-scrollbar-thumb:hover {
-        background: rgba(255, 255, 255, 0.2);
+        background: var(--text-muted);
     }
 }
 

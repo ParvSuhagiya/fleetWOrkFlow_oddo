@@ -32,17 +32,17 @@ const ROLE_NAV = {
 };
 
 const ROLE_COLORS = {
-  'Fleet Manager': '#06b6d4',
-  'Dispatcher': '#8b5cf6',
-  'Safety Officer': '#f59e0b',
-  'Financial Analyst': '#10b981',
+  'Fleet Manager': 'var(--accent-cyan)',
+  'Dispatcher': 'var(--accent-purple)',
+  'Safety Officer': 'var(--accent-yellow)',
+  'Financial Analyst': 'var(--accent-teal)',
 };
 
 const Sidebar = () => {
   const navigate = useNavigate();
   const user = JSON.parse(localStorage.getItem('user') || '{}');
   const navItems = ROLE_NAV[user.role] || ROLE_NAV['Fleet Manager'];
-  const roleColor = ROLE_COLORS[user.role] || '#06b6d4';
+  const roleColor = ROLE_COLORS[user.role] || 'var(--accent-cyan)';
 
   const handleLogout = () => {
     localStorage.removeItem('user');
@@ -50,18 +50,18 @@ const Sidebar = () => {
   };
 
   return (
-    <aside className="w-[260px] h-screen flex flex-col border-r border-white/5"
-      style={{ background: 'linear-gradient(180deg, rgba(15,20,35,0.98) 0%, rgba(10,14,26,0.99) 100%)' }}>
+    <aside className="w-[260px] h-screen flex flex-col border-r border-[var(--border-glass)]"
+      style={{ background: 'var(--bg-sidebar)' }}>
 
       {/* Brand */}
-      <div className="p-5 border-b border-white/5">
+      <div className="p-5 border-b border-[var(--border-glass)]">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-xl flex items-center justify-center"
-            style={{ background: `linear-gradient(135deg, ${roleColor}, ${roleColor}88)`, boxShadow: `0 0 20px ${roleColor}40` }}>
+          <div className="w-10 h-10 rounded-xl flex items-center justify-center transition-all duration-300"
+            style={{ background: `linear-gradient(135deg, ${roleColor}, var(--accent-blue))`, boxShadow: `0 8px 16px -4px ${roleColor}40` }}>
             <ShieldCheck size={22} className="text-white" />
           </div>
           <div>
-            <h1 className="text-lg font-black text-white tracking-tight">FleetFlow</h1>
+            <h1 className="text-lg font-black text-[var(--text-primary)] tracking-tight">FleetFlow</h1>
             <p className="text-[10px] font-bold uppercase tracking-widest" style={{ color: roleColor }}>{user.role || 'System'}</p>
           </div>
         </div>
@@ -73,8 +73,8 @@ const Sidebar = () => {
           <NavLink key={item.to} to={item.to} end={item.to === '/'}
             className={({ isActive }) =>
               `flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 group ${isActive
-                ? 'text-white bg-white/8 shadow-lg'
-                : 'text-gray-500 hover:text-gray-300 hover:bg-white/3'
+                ? 'text-[var(--text-primary)] bg-[var(--bg-card-hover)] shadow-sm'
+                : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-card)]'
               }`
             }
             style={({ isActive }) => isActive ? { borderLeft: `3px solid ${roleColor}` } : {}}>
@@ -85,19 +85,19 @@ const Sidebar = () => {
       </nav>
 
       {/* User + Logout */}
-      <div className="p-4 border-t border-white/5">
+      <div className="p-4 border-t border-[var(--border-glass)]">
         <div className="flex items-center gap-3 mb-3">
           <div className="w-9 h-9 rounded-full flex items-center justify-center text-xs font-black text-white"
-            style={{ background: `linear-gradient(135deg, ${roleColor}66, ${roleColor}33)` }}>
+            style={{ title: 'User Profile', background: `linear-gradient(135deg, ${roleColor}, var(--accent-blue))` }}>
             {(user.name || 'U').charAt(0)}
           </div>
           <div className="flex-1 min-w-0">
-            <p className="text-sm font-bold text-white truncate">{user.name || 'User'}</p>
-            <p className="text-[10px] text-gray-500 truncate">{user.email || ''}</p>
+            <p className="text-sm font-bold text-[var(--text-primary)] truncate">{user.name || 'User'}</p>
+            <p className="text-[10px] text-[var(--text-secondary)] truncate">{user.email || ''}</p>
           </div>
         </div>
         <button onClick={handleLogout}
-          className="w-full flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-red-500/10 hover:bg-red-500/20 text-red-400 hover:text-red-300 text-xs font-bold uppercase tracking-widest transition-all cursor-pointer">
+          className="w-full flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-[var(--accent-red)]/5 hover:bg-[var(--accent-red)]/10 text-[var(--accent-red)] hover:text-[var(--accent-red)] text-xs font-bold uppercase tracking-widest transition-all cursor-pointer border border-[var(--accent-red)]/10">
           <LogOut size={14} />
           Sign Out
         </button>

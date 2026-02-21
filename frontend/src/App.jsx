@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { BrowserRouter, Routes, Route, Navigate, useNavigate } from 'react-router-dom';
 import Sidebar from './components/Sidebar';
 import Header from './components/Header';
@@ -39,16 +39,15 @@ const ProtectedRoute = ({ path, children }) => {
   return children;
 };
 
-const ProtectedLayout = () => {
+const ProtectedLayout = ({ theme, toggleTheme }) => {
   const user = getUser();
-  const navigate = useNavigate();
   if (!user) return <Navigate to="/login" replace />;
 
   return (
     <div className="app-shell">
       <Sidebar />
       <div className="main-content">
-        <Header />
+        <Header theme={theme} toggleTheme={toggleTheme} />
         <div className="page-scroll">
           <Routes>
             <Route path="/" element={<Dashboard />} />
@@ -65,13 +64,26 @@ const ProtectedLayout = () => {
   );
 };
 
-const App = () => (
-  <BrowserRouter>
-    <Routes>
-      <Route path="/login" element={<Login />} />
-      <Route path="/*" element={<ProtectedLayout />} />
-    </Routes>
-  </BrowserRouter>
-);
+const App = () => {
+  const [theme, setTheme] = useState(() => localStorage.getItem('theme') || 'dark');
+
+  useEffect(() => {
+    document.documentElement.setAttribute('data-theme', theme);
+    localStorage.setItem('theme', theme);
+  }, [theme]);
+
+  const toggleTheme = () => {
+    setTheme(prev => (prev === 'dark' ? 'light' : 'dark'));
+  };
+
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route path="/login" element={<Login />} />
+        <Route path="/*" element={<ProtectedLayout theme={theme} toggleTheme={toggleTheme} />} />
+      </Routes>
+    </BrowserRouter>
+  );
+};
 
 export default App;

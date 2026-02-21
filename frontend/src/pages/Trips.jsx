@@ -77,11 +77,11 @@ const Trips = () => {
         <div className="p-8">
             <div className="flex justify-between items-center mb-8">
                 <div>
-                    <h2 className="text-2xl font-black text-white mb-1 uppercase tracking-tighter italic">Trip <span className="text-violet-400">Manifest</span></h2>
-                    <p className="text-gray-500 text-xs font-bold uppercase tracking-widest">Dispatch control and cargo routing</p>
+                    <h2 className="text-2xl font-black text-[var(--text-primary)] mb-1 uppercase tracking-tighter italic">Trip <span className="text-[var(--accent-purple)]">Manifest</span></h2>
+                    <p className="text-[var(--text-muted)] text-xs font-bold uppercase tracking-widest">Dispatch control and cargo routing</p>
                 </div>
                 <button onClick={() => setIsDispatchModalOpen(true)}
-                    className="bg-violet-500 hover:bg-violet-400 text-white px-6 py-2.5 rounded-xl font-black text-xs uppercase tracking-widest transition-all shadow-lg shadow-violet-500/20 flex items-center gap-2 cursor-pointer">
+                    className="bg-[var(--accent-purple)] hover:opacity-90 text-white px-6 py-2.5 rounded-xl font-black text-xs uppercase tracking-widest transition-all shadow-lg shadow-violet-500/20 flex items-center gap-2 cursor-pointer">
                     <Plus size={16} /> New Assignment
                 </button>
             </div>
@@ -99,11 +99,11 @@ const Trips = () => {
                                     </div>
                                     <div className="flex-1 min-w-0">
                                         <div className="flex items-center gap-2 flex-wrap">
-                                            <span className="text-white font-bold text-sm">{trip.source || 'Origin'}</span>
-                                            <ArrowRight size={14} className="text-gray-600" />
-                                            <span className="text-white font-bold text-sm">{trip.destination || 'Destination'}</span>
+                                            <span className="text-[var(--text-primary)] font-bold text-sm">{trip.source || 'Origin'}</span>
+                                            <ArrowRight size={14} className="text-[var(--text-muted)]" />
+                                            <span className="text-[var(--text-primary)] font-bold text-sm">{trip.destination || 'Destination'}</span>
                                         </div>
-                                        <div className="flex items-center gap-3 mt-1 text-xs text-gray-500">
+                                        <div className="flex items-center gap-3 mt-1 text-xs text-[var(--text-muted)]">
                                             <span>{trip.vehicleName || 'Vehicle'} ({trip.vehiclePlate || ''})</span>
                                             <span>•</span>
                                             <span>{trip.driverName || 'Driver'}</span>
@@ -136,8 +136,8 @@ const Trips = () => {
                 })}
                 {trips.length === 0 && (
                     <div className="glass-card text-center py-12">
-                        <Navigation2 size={48} className="text-gray-700 mx-auto mb-4" />
-                        <p className="text-gray-500 text-sm">No trips found. Create a new assignment to get started.</p>
+                        <Navigation2 size={48} className="text-[var(--text-muted)] opacity-20 mx-auto mb-4" />
+                        <p className="text-[var(--text-muted)] text-sm">No trips found. Create a new assignment to get started.</p>
                     </div>
                 )}
             </div>
@@ -146,15 +146,15 @@ const Trips = () => {
             <Modal isOpen={isDispatchModalOpen} onClose={() => setIsDispatchModalOpen(false)} title="New Trip Assignment">
                 <form onSubmit={handleDispatchSubmit} className="p-2 space-y-4">
                     <div className="space-y-1">
-                        <label className="text-[10px] text-gray-500 font-black uppercase tracking-widest ml-1">Vehicle</label>
-                        <select required className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm text-white focus:border-violet-500/50 appearance-none focus:outline-none"
+                        <label className="text-[10px] text-[var(--text-muted)] font-black uppercase tracking-widest ml-1">Vehicle</label>
+                        <select required className="w-full bg-[var(--bg-card)] border border-[var(--border-subtle)] rounded-xl px-4 py-3 text-sm text-[var(--text-primary)] focus:border-[var(--accent-purple)]/50 appearance-none focus:outline-none"
                             value={dispatchData.vehicleId}
                             onChange={(e) => {
                                 const v = vehicles.find(v => v._id === e.target.value);
                                 setDispatchData(prev => ({ ...prev, vehicleId: e.target.value, startOdometer: v ? v.odometer : 0 }));
                             }}>
-                            <option value="" className="bg-gray-900">Select Vehicle</option>
-                            {vehicles.map(v => <option key={v._id} value={v._id} className="bg-gray-900">{v.make} {v.model} ({v.licensePlate}) — {v.maxLoadCapacity}kg max</option>)}
+                            <option value="" className="bg-[var(--bg-sidebar)]">Select Vehicle</option>
+                            {vehicles.map(v => <option key={v._id} value={v._id} className="bg-[var(--bg-sidebar)]">{v.make} {v.model} ({v.licensePlate}) — {v.maxLoadCapacity}kg max</option>)}
                         </select>
                     </div>
 
@@ -185,14 +185,14 @@ const Trips = () => {
 
                     <div className="grid grid-cols-2 gap-4">
                         <div className="space-y-1">
-                            <label className="text-[10px] text-gray-500 font-black uppercase tracking-widest ml-1">Cargo Weight (KG)</label>
-                            <input required type="number" className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm text-white focus:border-violet-500/50 focus:outline-none"
+                            <label className="text-[10px] text-[var(--text-muted)] font-black uppercase tracking-widest ml-1">Cargo Weight (KG)</label>
+                            <input required type="number" className="w-full bg-[var(--bg-card)] border border-[var(--border-subtle)] rounded-xl px-4 py-3 text-sm text-[var(--text-primary)] focus:border-[var(--accent-purple)]/50 focus:outline-none"
                                 value={dispatchData.cargoWeight}
                                 onChange={(e) => setDispatchData(prev => ({ ...prev, cargoWeight: Number(e.target.value) }))} />
                         </div>
                         <div className="space-y-1">
-                            <label className="text-[10px] text-gray-500 font-black uppercase tracking-widest ml-1">Start Odometer</label>
-                            <input required type="number" className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm text-white focus:border-violet-500/50 focus:outline-none"
+                            <label className="text-[10px] text-[var(--text-muted)] font-black uppercase tracking-widest ml-1">Start Odometer</label>
+                            <input required type="number" className="w-full bg-[var(--bg-card)] border border-[var(--border-subtle)] rounded-xl px-4 py-3 text-sm text-[var(--text-primary)] focus:border-[var(--accent-purple)]/50 focus:outline-none"
                                 value={dispatchData.startOdometer}
                                 onChange={(e) => setDispatchData(prev => ({ ...prev, startOdometer: Number(e.target.value) }))} />
                         </div>
@@ -208,18 +208,18 @@ const Trips = () => {
             <Modal isOpen={isCompleteModalOpen} onClose={() => setIsCompleteModalOpen(false)} title="Complete Trip">
                 <form onSubmit={handleCompleteSubmit} className="p-2 space-y-4">
                     {selectedTrip && (
-                        <div className="bg-white/5 p-4 rounded-xl border border-white/5 mb-4">
-                            <p className="text-sm text-white font-bold">{selectedTrip.source} → {selectedTrip.destination}</p>
-                            <p className="text-xs text-gray-500 mt-1">{selectedTrip.vehicleName} • Start ODO: {selectedTrip.startOdometer}</p>
+                        <div className="bg-[var(--bg-card)] p-4 rounded-xl border border-[var(--border-subtle)] mb-4">
+                            <p className="text-sm text-[var(--text-primary)] font-bold">{selectedTrip.source} → {selectedTrip.destination}</p>
+                            <p className="text-xs text-[var(--text-muted)] mt-1">{selectedTrip.vehicleName} • Start ODO: {selectedTrip.startOdometer}</p>
                         </div>
                     )}
                     <div className="space-y-1">
-                        <label className="text-[10px] text-gray-500 font-black uppercase tracking-widest ml-1">End Odometer</label>
-                        <input required type="number" className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm text-white focus:border-teal-500/50 focus:outline-none"
+                        <label className="text-[10px] text-[var(--text-muted)] font-black uppercase tracking-widest ml-1">End Odometer</label>
+                        <input required type="number" className="w-full bg-[var(--bg-card)] border border-[var(--border-subtle)] rounded-xl px-4 py-3 text-sm text-[var(--text-primary)] focus:border-[var(--accent-teal)]/50 focus:outline-none"
                             value={endOdometer}
                             onChange={(e) => setEndOdometer(Number(e.target.value))} />
                     </div>
-                    <button type="submit" className="w-full bg-gradient-to-r from-teal-500 to-emerald-600 hover:from-teal-400 hover:to-emerald-500 text-white py-4 rounded-xl font-black uppercase tracking-widest text-xs transition-all shadow-xl shadow-teal-500/20 mt-4 cursor-pointer">
+                    <button type="submit" className="w-full bg-gradient-to-r from-[var(--accent-teal)] to-emerald-600 hover:opacity-90 text-white py-4 rounded-xl font-black uppercase tracking-widest text-xs transition-all shadow-xl shadow-teal-500/20 mt-4 cursor-pointer">
                         Confirm Completion
                     </button>
                 </form>

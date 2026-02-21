@@ -13,19 +13,19 @@ const StatCard = ({ title, value, icon: Icon, trend, color, subtitle }) => (
         <div className="absolute top-0 right-0 w-24 h-24 -mr-8 -mt-8 rounded-full opacity-10 group-hover:opacity-20 transition-opacity"
             style={{ backgroundColor: color }}></div>
         <div className="flex justify-between items-start mb-4">
-            <div className="p-3 rounded-xl bg-[rgba(255,255,255,0.03)] border border-[rgba(255,255,255,0.05)]" style={{ color }}>
+            <div className="p-3 rounded-xl bg-[var(--bg-card)] border border-[var(--border-subtle)]" style={{ color }}>
                 <Icon size={24} />
             </div>
             {trend && (
-                <div className={`flex items-center gap-1 text-[10px] font-bold px-2 py-1 rounded-lg uppercase tracking-widest ${trend === 'Critical' ? 'bg-red-500/10 text-red-400' : trend === 'Warning' ? 'bg-yellow-500/10 text-yellow-400' : 'bg-teal-500/10 text-teal-400'}`}>
+                <div className={`flex items-center gap-1 text-[10px] font-bold px-2 py-1 rounded-lg uppercase tracking-widest ${trend === 'Critical' ? 'bg-red-500/10 text-red-500' : trend === 'Warning' ? 'bg-yellow-500/10 text-yellow-500' : 'bg-teal-500/10 text-teal-500'}`}>
                     {trend === 'Active' && <ArrowUpRight size={12} />}
                     {trend}
                 </div>
             )}
         </div>
-        <h3 className="text-gray-400 text-xs font-bold uppercase tracking-widest">{title}</h3>
-        <p className="text-3xl font-black text-white mt-1 tracking-tighter">{value}</p>
-        {subtitle && <p className="text-[10px] text-gray-500 mt-1 font-medium italic">{subtitle}</p>}
+        <h3 className="text-[var(--text-muted)] text-xs font-bold uppercase tracking-widest">{title}</h3>
+        <p className="text-3xl font-black text-[var(--text-primary)] mt-1 tracking-tighter">{value}</p>
+        {subtitle && <p className="text-[10px] text-[var(--text-secondary)] mt-1 font-medium italic">{subtitle}</p>}
     </div>
 );
 
@@ -48,30 +48,30 @@ const FleetManagerDash = () => {
     return (
         <>
             <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4 mb-6">
-                <StatCard title="Total Fleet" value={vehicles.length} icon={Truck} trend="Active" color="#06b6d4" subtitle={`${available} available, ${inShop} in shop`} />
-                <StatCard title="Utilization Rate" value={`${utilization}%`} icon={Activity} trend={Number(utilization) > 60 ? 'Active' : 'Warning'} color="#8b5cf6" subtitle={`${onTrip} vehicles deployed`} />
-                <StatCard title="Fuel Spend" value={`$${totalFuelCost.toLocaleString()}`} icon={Fuel} color="#f59e0b" subtitle={`${fuelLogs.length} log entries`} />
-                <StatCard title="Maintenance Cost" value={`$${totalMaintCost.toLocaleString()}`} icon={Wrench} trend={totalMaintCost > 3000 ? 'Critical' : 'Active'} color="#10b981" subtitle={`${maintenanceLogs.length} work orders`} />
+                <StatCard title="Total Fleet" value={vehicles.length} icon={Truck} trend="Active" color="var(--accent-cyan)" subtitle={`${available} available, ${inShop} in shop`} />
+                <StatCard title="Utilization Rate" value={`${utilization}%`} icon={Activity} trend={Number(utilization) > 60 ? 'Active' : 'Warning'} color="var(--accent-purple)" subtitle={`${onTrip} vehicles deployed`} />
+                <StatCard title="Fuel Spend" value={`$${totalFuelCost.toLocaleString()}`} icon={Fuel} color="var(--accent-yellow)" subtitle={`${fuelLogs.length} log entries`} />
+                <StatCard title="Maintenance Cost" value={`$${totalMaintCost.toLocaleString()}`} icon={Wrench} trend={totalMaintCost > 3000 ? 'Critical' : 'Active'} color="var(--accent-teal)" subtitle={`${maintenanceLogs.length} work orders`} />
             </div>
 
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
                 {/* Live Trips */}
                 <div className="glass-card">
                     <div className="flex items-center justify-between mb-4">
-                        <h3 className="text-white font-bold flex items-center gap-2"><Navigation2 size={16} className="text-cyan-400" /> Active Trips</h3>
-                        <Link to="/trips" className="text-xs text-cyan-400 hover:text-cyan-300">View All →</Link>
+                        <h3 className="text-[var(--text-primary)] font-bold flex items-center gap-2"><Navigation2 size={16} className="text-[var(--accent-cyan)]" /> Active Trips</h3>
+                        <Link to="/trips" className="text-xs text-[var(--accent-cyan)] hover:text-[var(--accent-cyan)] opacity-80 hover:opacity-100">View All →</Link>
                     </div>
                     {activeTrips.length === 0 ? (
-                        <p className="text-gray-500 text-sm">No active trips</p>
+                        <p className="text-[var(--text-muted)] text-sm">No active trips</p>
                     ) : activeTrips.slice(0, 4).map(trip => (
-                        <div key={trip._id} className="flex items-center justify-between py-3 border-b border-white/5 last:border-0">
+                        <div key={trip._id} className="flex items-center justify-between py-3 border-b border-[var(--border-subtle)] last:border-0">
                             <div>
-                                <p className="text-sm text-white font-medium">{trip.vehicleName || 'Vehicle'}</p>
-                                <p className="text-xs text-gray-500">{trip.source} → {trip.destination}</p>
+                                <p className="text-sm text-[var(--text-primary)] font-medium">{trip.vehicleName || 'Vehicle'}</p>
+                                <p className="text-xs text-[var(--text-secondary)]">{trip.source} → {trip.destination}</p>
                             </div>
                             <div className="text-right">
-                                <p className="text-xs text-gray-400">{trip.driverName || 'Driver'}</p>
-                                <span className="text-[10px] px-2 py-0.5 rounded-full bg-cyan-500/10 text-cyan-400 font-bold">{trip.cargoWeight}kg</span>
+                                <p className="text-xs text-[var(--text-muted)]">{trip.driverName || 'Driver'}</p>
+                                <span className="text-[10px] px-2 py-0.5 rounded-full bg-[var(--accent-cyan)]/10 text-[var(--accent-cyan)] font-bold">{trip.cargoWeight}kg</span>
                             </div>
                         </div>
                     ))}
@@ -79,19 +79,19 @@ const FleetManagerDash = () => {
 
                 {/* Fleet Status Breakdown */}
                 <div className="glass-card">
-                    <h3 className="text-white font-bold mb-4 flex items-center gap-2"><Layers size={16} className="text-violet-400" /> Fleet Status</h3>
+                    <h3 className="text-[var(--text-primary)] font-bold mb-4 flex items-center gap-2"><Layers size={16} className="text-[var(--accent-purple)]" /> Fleet Status</h3>
                     {[
-                        { label: 'Available', count: available, color: '#10b981', pct: vehicles.length ? (available / vehicles.length * 100) : 0 },
-                        { label: 'On Trip', count: onTrip, color: '#06b6d4', pct: vehicles.length ? (onTrip / vehicles.length * 100) : 0 },
-                        { label: 'In Shop', count: inShop, color: '#f59e0b', pct: vehicles.length ? (inShop / vehicles.length * 100) : 0 },
-                        { label: 'Retired', count: vehicles.filter(v => v.status === 'Retired').length, color: '#6b7280', pct: vehicles.length ? (vehicles.filter(v => v.status === 'Retired').length / vehicles.length * 100) : 0 },
+                        { label: 'Available', count: available, color: 'var(--accent-teal)', pct: vehicles.length ? (available / vehicles.length * 100) : 0 },
+                        { label: 'On Trip', count: onTrip, color: 'var(--accent-cyan)', pct: vehicles.length ? (onTrip / vehicles.length * 100) : 0 },
+                        { label: 'In Shop', count: inShop, color: 'var(--accent-yellow)', pct: vehicles.length ? (inShop / vehicles.length * 100) : 0 },
+                        { label: 'Retired', count: vehicles.filter(v => v.status === 'Retired').length, color: 'var(--text-muted)', pct: vehicles.length ? (vehicles.filter(v => v.status === 'Retired').length / vehicles.length * 100) : 0 },
                     ].map(s => (
                         <div key={s.label} className="mb-3">
                             <div className="flex justify-between text-sm mb-1">
-                                <span className="text-gray-400">{s.label}</span>
-                                <span className="text-white font-bold">{s.count}</span>
+                                <span className="text-[var(--text-secondary)]">{s.label}</span>
+                                <span className="text-[var(--text-primary)] font-bold">{s.count}</span>
                             </div>
-                            <div className="w-full h-2 bg-white/5 rounded-full overflow-hidden">
+                            <div className="w-full h-2 bg-[var(--bg-card)] rounded-full overflow-hidden">
                                 <div className="h-full rounded-full transition-all duration-500" style={{ width: `${s.pct}%`, background: s.color }}></div>
                             </div>
                         </div>
@@ -117,51 +117,51 @@ const DispatcherDash = () => {
     return (
         <>
             <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4 mb-6">
-                <StatCard title="Active Dispatches" value={dispatched} icon={Navigation2} trend="Active" color="#8b5cf6" subtitle="Currently en-route" />
-                <StatCard title="Draft Manifests" value={drafts} icon={Boxes} trend={drafts > 3 ? 'Warning' : 'Active'} color="#f59e0b" subtitle="Awaiting dispatch" />
-                <StatCard title="Available Vehicles" value={availableVehicles} icon={Truck} color="#06b6d4" subtitle={`of ${vehicles.length} total`} />
-                <StatCard title="Available Drivers" value={availableDrivers} icon={Users} color="#10b981" subtitle={`of ${drivers.length} total`} />
+                <StatCard title="Active Dispatches" value={dispatched} icon={Navigation2} trend="Active" color="var(--accent-purple)" subtitle="Currently en-route" />
+                <StatCard title="Draft Manifests" value={drafts} icon={Boxes} trend={drafts > 3 ? 'Warning' : 'Active'} color="var(--accent-yellow)" subtitle="Awaiting dispatch" />
+                <StatCard title="Available Vehicles" value={availableVehicles} icon={Truck} color="var(--accent-cyan)" subtitle={`of ${vehicles.length} total`} />
+                <StatCard title="Available Drivers" value={availableDrivers} icon={Users} color="var(--accent-teal)" subtitle={`of ${drivers.length} total`} />
             </div>
 
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
                 {/* Recent Dispatches */}
                 <div className="glass-card">
                     <div className="flex items-center justify-between mb-4">
-                        <h3 className="text-white font-bold flex items-center gap-2"><Navigation2 size={16} className="text-violet-400" /> Recent Dispatches</h3>
-                        <Link to="/trips" className="text-xs text-violet-400 hover:text-violet-300">Manage →</Link>
+                        <h3 className="text-[var(--text-primary)] font-bold flex items-center gap-2"><Navigation2 size={16} className="text-[var(--accent-purple)]" /> Recent Dispatches</h3>
+                        <Link to="/trips" className="text-xs text-[var(--accent-purple)] hover:text-[var(--accent-purple)] opacity-80 hover:opacity-100">Manage →</Link>
                     </div>
                     {trips.filter(t => t.status === 'Dispatched').slice(0, 5).map(trip => (
-                        <div key={trip._id} className="flex items-center justify-between py-3 border-b border-white/5 last:border-0">
+                        <div key={trip._id} className="flex items-center justify-between py-3 border-b border-[var(--border-subtle)] last:border-0">
                             <div className="flex items-center gap-3">
-                                <MapPin size={14} className="text-violet-400" />
+                                <MapPin size={14} className="text-[var(--accent-purple)]" />
                                 <div>
-                                    <p className="text-sm text-white font-medium">{trip.source} → {trip.destination}</p>
-                                    <p className="text-xs text-gray-500">{trip.vehicleName} • {trip.driverName}</p>
+                                    <p className="text-sm text-[var(--text-primary)] font-medium">{trip.source} → {trip.destination}</p>
+                                    <p className="text-xs text-[var(--text-secondary)]">{trip.vehicleName} • {trip.driverName}</p>
                                 </div>
                             </div>
-                            <span className="text-xs px-2 py-0.5 rounded-full bg-violet-500/10 text-violet-400 font-bold">{trip.cargoWeight}kg</span>
+                            <span className="text-xs px-2 py-0.5 rounded-full bg-[var(--accent-purple)]/10 text-[var(--accent-purple)] font-bold">{trip.cargoWeight}kg</span>
                         </div>
                     ))}
                     {trips.filter(t => t.status === 'Dispatched').length === 0 && (
-                        <p className="text-gray-500 text-sm">No active dispatches</p>
+                        <p className="text-[var(--text-muted)] text-sm">No active dispatches</p>
                     )}
                 </div>
 
                 {/* Trip Summary */}
                 <div className="glass-card">
-                    <h3 className="text-white font-bold mb-4 flex items-center gap-2"><BarChart3 size={16} className="text-cyan-400" /> Trip Summary</h3>
+                    <h3 className="text-[var(--text-primary)] font-bold mb-4 flex items-center gap-2"><BarChart3 size={16} className="text-[var(--accent-cyan)]" /> Trip Summary</h3>
                     {[
-                        { label: 'Dispatched', count: dispatched, color: '#8b5cf6', icon: Navigation2 },
-                        { label: 'Draft', count: drafts, color: '#f59e0b', icon: Boxes },
-                        { label: 'Completed', count: completed, color: '#10b981', icon: CheckCircle2 },
-                        { label: 'Cancelled', count: trips.filter(t => t.status === 'Cancelled').length, color: '#ef4444', icon: XCircle },
+                        { label: 'Dispatched', count: dispatched, color: 'var(--accent-purple)', icon: Navigation2 },
+                        { label: 'Draft', count: drafts, color: 'var(--accent-yellow)', icon: Boxes },
+                        { label: 'Completed', count: completed, color: 'var(--accent-teal)', icon: CheckCircle2 },
+                        { label: 'Cancelled', count: trips.filter(t => t.status === 'Cancelled').length, color: 'var(--accent-red)', icon: XCircle },
                     ].map(s => (
-                        <div key={s.label} className="flex items-center justify-between py-3 border-b border-white/5 last:border-0">
+                        <div key={s.label} className="flex items-center justify-between py-3 border-b border-[var(--border-subtle)] last:border-0">
                             <div className="flex items-center gap-3">
                                 <s.icon size={16} style={{ color: s.color }} />
-                                <span className="text-sm text-gray-400">{s.label}</span>
+                                <span className="text-sm text-[var(--text-secondary)]">{s.label}</span>
                             </div>
-                            <span className="text-lg font-black text-white">{s.count}</span>
+                            <span className="text-lg font-black text-[var(--text-primary)]">{s.count}</span>
                         </div>
                     ))}
                 </div>
@@ -188,26 +188,26 @@ const SafetyOfficerDash = () => {
     return (
         <>
             <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4 mb-6">
-                <StatCard title="Avg Safety Score" value={avgSafety} icon={ShieldAlert} trend={Number(avgSafety) > 80 ? 'Active' : 'Warning'} color="#f59e0b" subtitle={`Across ${drivers.length} drivers`} />
-                <StatCard title="At-Risk Drivers" value={lowScoreDrivers.length} icon={AlertTriangle} trend={lowScoreDrivers.length > 0 ? 'Critical' : 'Active'} color="#ef4444" subtitle="Safety score below 70" />
-                <StatCard title="Expired Licenses" value={expiredLicenses.length} icon={XCircle} trend={expiredLicenses.length > 0 ? 'Critical' : 'Active'} color="#ef4444" subtitle="Immediate action required" />
-                <StatCard title="Expiring Soon" value={expiringLicenses.length} icon={Clock} trend={expiringLicenses.length > 0 ? 'Warning' : 'Active'} color="#f59e0b" subtitle="Within 6 months" />
+                <StatCard title="Avg Safety Score" value={avgSafety} icon={ShieldAlert} trend={Number(avgSafety) > 80 ? 'Active' : 'Warning'} color="var(--accent-yellow)" subtitle={`Across ${drivers.length} drivers`} />
+                <StatCard title="At-Risk Drivers" value={lowScoreDrivers.length} icon={AlertTriangle} trend={lowScoreDrivers.length > 0 ? 'Critical' : 'Active'} color="var(--accent-red)" subtitle="Safety score below 70" />
+                <StatCard title="Expired Licenses" value={expiredLicenses.length} icon={XCircle} trend={expiredLicenses.length > 0 ? 'Critical' : 'Active'} color="var(--accent-red)" subtitle="Immediate action required" />
+                <StatCard title="Expiring Soon" value={expiringLicenses.length} icon={Clock} trend={expiringLicenses.length > 0 ? 'Warning' : 'Active'} color="var(--accent-yellow)" subtitle="Within 6 months" />
             </div>
 
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
                 {/* Driver Safety Scores */}
                 <div className="glass-card">
-                    <h3 className="text-white font-bold mb-4 flex items-center gap-2"><ShieldAlert size={16} className="text-yellow-400" /> Driver Safety Scores</h3>
+                    <h3 className="text-[var(--text-primary)] font-bold mb-4 flex items-center gap-2"><ShieldAlert size={16} className="text-[var(--accent-yellow)]" /> Driver Safety Scores</h3>
                     {drivers.sort((a, b) => (a.safetyScore || 0) - (b.safetyScore || 0)).map(driver => {
                         const score = driver.safetyScore || 0;
-                        const color = score >= 90 ? '#10b981' : score >= 70 ? '#f59e0b' : '#ef4444';
+                        const color = score >= 90 ? 'var(--accent-teal)' : score >= 70 ? 'var(--accent-yellow)' : 'var(--accent-red)';
                         return (
                             <div key={driver._id} className="mb-3">
                                 <div className="flex justify-between text-sm mb-1">
-                                    <span className="text-gray-400">{driver.name}</span>
+                                    <span className="text-[var(--text-secondary)]">{driver.name}</span>
                                     <span className="font-bold" style={{ color }}>{score}</span>
                                 </div>
-                                <div className="w-full h-2 bg-white/5 rounded-full overflow-hidden">
+                                <div className="w-full h-2 bg-[var(--bg-card)] rounded-full overflow-hidden">
                                     <div className="h-full rounded-full transition-all duration-500" style={{ width: `${score}%`, background: color }}></div>
                                 </div>
                             </div>
@@ -217,19 +217,19 @@ const SafetyOfficerDash = () => {
 
                 {/* License Alerts */}
                 <div className="glass-card">
-                    <h3 className="text-white font-bold mb-4 flex items-center gap-2"><BadgeCheck size={16} className="text-red-400" /> License Compliance</h3>
+                    <h3 className="text-[var(--text-primary)] font-bold mb-4 flex items-center gap-2"><BadgeCheck size={16} className="text-[var(--accent-red)]" /> License Compliance</h3>
                     {drivers.map(driver => {
                         const expired = driver.licenseExpiry && new Date(driver.licenseExpiry) < new Date();
                         const exp = driver.licenseExpiry ? new Date(driver.licenseExpiry) : null;
                         const sixMonths = new Date(Date.now() + 180 * 24 * 60 * 60 * 1000);
                         const expiringSoon = exp && !expired && exp <= sixMonths;
-                        const statusColor = expired ? '#ef4444' : expiringSoon ? '#f59e0b' : '#10b981';
+                        const statusColor = expired ? 'var(--accent-red)' : expiringSoon ? 'var(--accent-yellow)' : 'var(--accent-teal)';
                         const statusLabel = expired ? 'EXPIRED' : expiringSoon ? 'EXPIRING' : 'VALID';
                         return (
-                            <div key={driver._id} className="flex items-center justify-between py-3 border-b border-white/5 last:border-0">
+                            <div key={driver._id} className="flex items-center justify-between py-3 border-b border-[var(--border-subtle)] last:border-0">
                                 <div>
-                                    <p className="text-sm text-white font-medium">{driver.name}</p>
-                                    <p className="text-xs text-gray-500">{driver.licenseNumber} • Exp: {driver.licenseExpiry ? new Date(driver.licenseExpiry).toLocaleDateString() : 'N/A'}</p>
+                                    <p className="text-sm text-[var(--text-primary)] font-medium">{driver.name}</p>
+                                    <p className="text-xs text-[var(--text-secondary)]">{driver.licenseNumber} • Exp: {driver.licenseExpiry ? new Date(driver.licenseExpiry).toLocaleDateString() : 'N/A'}</p>
                                 </div>
                                 <span className="text-[10px] font-bold px-2 py-1 rounded-lg uppercase tracking-widest" style={{ background: `${statusColor}15`, color: statusColor }}>{statusLabel}</span>
                             </div>
@@ -266,26 +266,26 @@ const FinancialAnalystDash = () => {
     return (
         <>
             <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4 mb-6">
-                <StatCard title="Total Fuel Spend" value={`$${totalFuelCost.toLocaleString()}`} icon={Fuel} color="#f59e0b" subtitle={`${fuelLogs.length} transactions`} />
-                <StatCard title="Total Maintenance" value={`$${totalMaintCost.toLocaleString()}`} icon={Wrench} color="#06b6d4" subtitle={`${maintenanceLogs.length} work orders`} />
-                <StatCard title="Total Operational Cost" value={`$${totalOpCost.toLocaleString()}`} icon={DollarSign} trend={totalOpCost > 5000 ? 'Warning' : 'Active'} color="#8b5cf6" subtitle="Fuel + Maintenance" />
-                <StatCard title="Maintenance ROI" value={`${maintROI}%`} icon={TrendingUp} color="#10b981" subtitle="Cost vs Fleet Value" />
+                <StatCard title="Total Fuel Spend" value={`$${totalFuelCost.toLocaleString()}`} icon={Fuel} color="var(--accent-yellow)" subtitle={`${fuelLogs.length} transactions`} />
+                <StatCard title="Total Maintenance" value={`$${totalMaintCost.toLocaleString()}`} icon={Wrench} color="var(--accent-cyan)" subtitle={`${maintenanceLogs.length} work orders`} />
+                <StatCard title="Total Operational Cost" value={`$${totalOpCost.toLocaleString()}`} icon={DollarSign} trend={totalOpCost > 5000 ? 'Warning' : 'Active'} color="var(--accent-purple)" subtitle="Fuel + Maintenance" />
+                <StatCard title="Maintenance ROI" value={`${maintROI}%`} icon={TrendingUp} color="var(--accent-teal)" subtitle="Cost vs Fleet Value" />
             </div>
 
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
                 {/* Cost Per Vehicle */}
                 <div className="glass-card">
-                    <h3 className="text-white font-bold mb-4 flex items-center gap-2"><BarChart3 size={16} className="text-violet-400" /> Cost Per Vehicle</h3>
+                    <h3 className="text-[var(--text-primary)] font-bold mb-4 flex items-center gap-2"><BarChart3 size={16} className="text-[var(--accent-purple)]" /> Cost Per Vehicle</h3>
                     {costByVehicle.map(v => (
                         <div key={v._id} className="mb-3">
                             <div className="flex justify-between text-sm mb-1">
-                                <span className="text-gray-400">{v.make} {v.model} <span className="text-gray-600">({v.licensePlate})</span></span>
-                                <span className="text-white font-bold">${v.totalCost.toLocaleString()}</span>
+                                <span className="text-[var(--text-secondary)]">{v.make} {v.model} <span className="text-[var(--text-muted)]">({v.licensePlate})</span></span>
+                                <span className="text-[var(--text-primary)] font-bold">${v.totalCost.toLocaleString()}</span>
                             </div>
                             <div className="flex gap-1 text-[10px]">
-                                <span className="text-yellow-400">Fuel: ${v.fuelCost}</span>
-                                <span className="text-gray-600">|</span>
-                                <span className="text-cyan-400">Maint: ${v.maintCost}</span>
+                                <span className="text-[var(--accent-yellow)]">Fuel: ${v.fuelCost}</span>
+                                <span className="text-[var(--text-muted)]">|</span>
+                                <span className="text-[var(--accent-cyan)]">Maint: ${v.maintCost}</span>
                             </div>
                         </div>
                     ))}
@@ -294,16 +294,16 @@ const FinancialAnalystDash = () => {
                 {/* Recent Fuel Logs */}
                 <div className="glass-card">
                     <div className="flex items-center justify-between mb-4">
-                        <h3 className="text-white font-bold flex items-center gap-2"><Fuel size={16} className="text-yellow-400" /> Recent Fuel Logs</h3>
-                        <Link to="/fuel" className="text-xs text-yellow-400 hover:text-yellow-300">View All →</Link>
+                        <h3 className="text-[var(--text-primary)] font-bold flex items-center gap-2"><Fuel size={16} className="text-[var(--accent-yellow)]" /> Recent Fuel Logs</h3>
+                        <Link to="/fuel" className="text-xs text-[var(--accent-yellow)] hover:text-[var(--accent-yellow)] opacity-80 hover:opacity-100">View All →</Link>
                     </div>
                     {fuelLogs.slice(0, 5).map(log => (
-                        <div key={log._id} className="flex items-center justify-between py-3 border-b border-white/5 last:border-0">
+                        <div key={log._id} className="flex items-center justify-between py-3 border-b border-[var(--border-subtle)] last:border-0">
                             <div>
-                                <p className="text-sm text-white font-medium">{log.vehicleName || 'Vehicle'}</p>
-                                <p className="text-xs text-gray-500">{log.liters}L • {new Date(log.date).toLocaleDateString()}</p>
+                                <p className="text-sm text-[var(--text-primary)] font-medium">{log.vehicleName || 'Vehicle'}</p>
+                                <p className="text-xs text-[var(--text-secondary)]">{log.liters}L • {new Date(log.date).toLocaleDateString()}</p>
                             </div>
-                            <span className="text-sm font-bold text-yellow-400">${log.cost}</span>
+                            <span className="text-sm font-bold text-[var(--accent-yellow)]">${log.cost}</span>
                         </div>
                     ))}
                 </div>
@@ -338,10 +338,10 @@ const Dashboard = () => {
         <div className="p-6">
             <div className="flex items-center justify-between mb-6">
                 <div>
-                    <h2 className="text-2xl font-black text-white tracking-tight">{title}</h2>
-                    <p className="text-sm text-gray-500 mt-0.5">Welcome back, {user.name || 'User'}</p>
+                    <h2 className="text-2xl font-black text-[var(--text-primary)] tracking-tight">{title}</h2>
+                    <p className="text-sm text-[var(--text-secondary)] mt-0.5">Welcome back, {user.name || 'User'}</p>
                 </div>
-                <div className="text-xs text-gray-600">
+                <div className="text-xs text-[var(--text-muted)]">
                     {new Date().toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}
                 </div>
             </div>
